@@ -1,103 +1,75 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ApplicationManifest xmlns="http://schemas.google.com/ApplicationManifest/2009">
-<!-- FROM: https://developers.google.com/google-apps/marketplace/manifest#example -->
+
   <!-- Support info to show in the marketplace & control panel -->
   <Support>
     <!-- URL for application setup as an optional redirect during the install -->
-    <Link rel="setup" href="http://www.curbyourgod.com/google/setup.php?domain=${DOMAIN_NAME}" />
+    <!--<Link rel="setup" href="http://curbyourgod.com/google/setup.php?domain=${DOMAIN_NAME}" /> -->
 
-    <!-- URL for application configuration, accessed from the app settings page in the control panel -->
-    <Link rel="manage" href="http://www.curbyourgod.com/google/admin.php?domain=${DOMAIN_NAME}" />
+    <!-- URL for application configuration, accessed from the app settings
+     page in the control panel -->
+    <Link rel="manage" href="http://curbyourgod.com/google/admin.php?domain=${DOMAIN_NAME}" />
 
     <!-- URL explaining how customers get support. -->
-    <Link rel="support" href="http://www.curbyourgod.com/google/support.php" />
+    <!--<Link rel="support" href="http://curbyourgod.com/google/support.php" />-->
 
-    <!-- URL that is displayed to admins during the deletion process, to specify policies such as data retention, how to claim accounts, etc. -->
-    <Link rel="deletion-policy" href="http://www.curbyourgod.com/google/deletion-policy.php" />
+    <!-- URL that is displayed to admins during the deletion process,
+     to specify policies such as data retention, how to claim accounts, etc. -->
+    <!--<Link rel="deletion-policy" href="http://curbyourgod.com/google/deletion-policy.php" />-->
   </Support>
 
   <!-- Name and description pulled from message bundles -->
-  <Name>Expire-a-mail</Name>
-  <Description>A simple application for testing the marketplace</Description>
+  <Name>HelloWorld</Name>
+  <Description>A simple Hello World application for testing
+  Gmail contextual gadgets</Description>
 
   <!-- Show this link in Google's universal navigation for all users -->
   <Extension id="navLink" type="link">
-    <Name>AppTest</Name>
-    <Url>http://www.curbyourgod.com/home.php?from=google&amp;domain=${DOMAIN_NAME}</Url>
-    <!-- This app also uses the Calendar API -->
-    <Scope ref="calendarFeed"/>
+    <Name>HelloWorld</Name>
+    <Url>http://curbyourgod.com/home.php?from=google&amp;domain=${DOMAIN_NAME}</Url>
   </Extension>
 
   <!-- Declare our OpenID realm so our app is white listed -->
   <Extension id="realm" type="openIdRealm">
-    <Url>http://www.curbyourgod.com</Url>
+    <Url>http://curbyourgod.com</Url>
   </Extension>
 
-  <!-- Need access to the Calendar feed -->
-  <Scope id="calendarFeed">
-    <Url>http://www.google.com/calendar/feeds/</Url>
-    <Reason>This application shows the next Calendar event.</Reason>
-  </Scope>
-
-<!-- FROM: https://developers.google.com/google-apps/gmail/contextual_gadgets#using_pre-canned_extractors -->
-<!--  EXTRACTOR
-  Configures an extractor that will be used to get context to
-  trigger the gadget.  If the gadget uses multiple extractors, include a
-  separate <Extension> tag for each one.
-  id - give the extractor any name you like.
-  <Name> - a human-readable name for display to Google Apps administrators.
-  <Url> - the extractor ID, like google.com:HelloWorld or 100000000000:CustomExtractor.
-  <Param> - an extractor output field & regular expression
-  to filter the extractor's default output.
-  <Triggers> - the same gadget id that is defined
-  in the gadget element below.
-  <Scope> - a scope ID defined in a scope element below. If the extractor
-  can access content in multiple email parts, include a separate <Scope>
-  tag for each one - whether your gadget uses them all or not.  -->
+<!-- EXTRACTOR -->
 
 <Extension id="HelloWorldExtractor" type="contextExtractor">
-  <Name>Hello World Extractor</Name>
+  <Name>Hello World</Name>
   <Url>google.com:HelloWorld</Url>
-  <Param name="_extractedField_" value="_regexp_"/>
-  <Triggers ref="expireMail"/>
-  <Scope ref="google.com:HelloWorld-BODY"/>
-  <Scope ref="google.com:HelloWorld-SUBJECT" />
+  <!-- Uncomment this Param to apply a filter to the extractor's
+  default output. The example regexp below makes the match case sensitive.
+  <Param name="hello" value="H[a-z]* W[a-z]*"/> -->
+  <Triggers ref="HelloWorldGadget"/>
+  <Scope ref="emailSubject"/>
+  <Scope ref="emailBody"/>
   <Container name="mail"/>
 </Extension>
 
-<!--  GADGET
-  Configures the gadget spec.
-  id - give the gadget any name you like.
-  <Name> - a human-readable name for display to Google Apps administrators.
-  <Url> - the location of the gadget spec. -->
+<!-- GADGET -->
 
-<Extension id="expireMail" type="gadget">
-  <Name>ExpireMail</Name>
-  <Url>https://code.google.com/p/gmail-expiration/source/browse/manifest.xml</Url>
+<Extension id="HelloWorldGadget" type="gadget">
+  <Name>Hello World Gmail contextual gadget</Name>
+  <Url>http://code.google.com/p/gmail-expiration/source/browse/helloworld.xml</Url>
   <Container name="mail"/>
   <!-- Uncomment this to enable Caja. -->
-  <!-- Param name="caja" value="enabled"/> -->
+  <!-- <Param name="caja" value="enabled"/> -->
 </Extension>
 
-<!--  SCOPE
-  Configures which email part the extractor(s) can access.
-  If the extractor can access content in multiple email parts,
-  include a separate <Scope> tag for each one -- whether your
-  gadget uses them all or not.
-  id - give the scope any name you like.
-  <Url> - a URI from the documented list of supported scopes.
-  If using a predefined extractor, use the scope(s) documented
-  for that extractor.
-  <Reason> - text to display to Google Apps domain administrators
-  so that they can decide whether to grant access. -->
+<!-- SCOPE -->
 
-<Scope id="google.com:HelloWorld-BODY">
-  <Url>tag:google.com,2010:auth/contextual/extractor/BODY</Url>
-  <Reason>Hello World sample extractor - BODY</Reason>
-</Scope>
-<Scope id="google.com:HelloWorld-SUBJECT">
+<Scope id="emailSubject">
   <Url>tag:google.com,2010:auth/contextual/extractor/SUBJECT</Url>
-  <Reason>Hello World sample extractor - SUBJECT Reason>
+  <Reason>This application searches the Subject: line of each email
+  for the text "Hello World."</Reason>
+</Scope>
+
+<Scope id="emailBody">
+  <Url>tag:google.com,2010:auth/contextual/extractor/BODY</Url>
+  <Reason>This application searches the message body of each email
+  for the text "Hello World."</Reason>
 </Scope>
 
 </ApplicationManifest>
