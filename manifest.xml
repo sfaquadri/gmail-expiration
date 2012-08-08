@@ -55,12 +55,13 @@
   can access content in multiple email parts, include a separate <Scope>
   tag for each one - whether your gadget uses them all or not.  -->
 
-<Extension id="_testExtractor_" type="contextExtractor">
-  <Name>_displayName_</Name>
-  <Url>_TestExtractorId_</Url>
+<Extension id="HelloWorldExtractor" type="contextExtractor">
+  <Name>Hello World Extractor</Name>
+  <Url>google.com:HelloWorld</Url>
   <Param name="_extractedField_" value="_regexp_"/>
-  <Triggers ref="_exampleGadget_"/>
-  <Scope ref="_exampleScope_"/>
+  <Triggers ref="expireMail"/>
+  <Scope ref="google.com:HelloWorld-BODY"/>
+  <Scope ref="google.com:HelloWorld-SUBJECT" />
   <Container name="mail"/>
 </Extension>
 
@@ -70,9 +71,9 @@
   <Name> - a human-readable name for display to Google Apps administrators.
   <Url> - the location of the gadget spec. -->
 
-<Extension id="`exampleGadget`" type="gadget">
-  <Name>_displayName_</Name>
-  <Url>_http://curbyourgod.com/gadgets/mygadget.xml_</Url>
+<Extension id="expireMail" type="gadget">
+  <Name>ExpireMail</Name>
+  <Url>https://code.google.com/p/gmail-expiration/source/browse/manifest.xml</Url>
   <Container name="mail"/>
   <!-- Uncomment this to enable Caja. -->
   <!-- Param name="caja" value="enabled"/> -->
@@ -90,9 +91,13 @@
   <Reason> - text to display to Google Apps domain administrators
   so that they can decide whether to grant access. -->
 
-<Scope id="_exampleScope_">
-  <Url>_scopeURI_</Url>
-  <Reason>_Explanatory text for Google Apps administrators_</Reason>
+<Scope id="google.com:HelloWorld-BODY">
+  <Url>tag:google.com,2010:auth/contextual/extractor/BODY</Url>
+  <Reason>Hello World sample extractor - BODY</Reason>
+</Scope>
+<Scope id="google.com:HelloWorld-SUBJECT">
+  <Url>tag:google.com,2010:auth/contextual/extractor/SUBJECT</Url>
+  <Reason>Hello World sample extractor - SUBJECT Reason>
 </Scope>
 
 </ApplicationManifest>
