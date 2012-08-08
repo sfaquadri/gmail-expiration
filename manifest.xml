@@ -52,7 +52,7 @@
 
 <Extension id="HelloWorldGadget" type="gadget">
   <Name>Hello World Gmail contextual gadget</Name>
-  <Url>http://code.google.com/p/gmail-expiration/source/browse/helloworld.xml</Url>
+  <Url>http://gmail-expiration.googlecode.com/git/helloworld.xml</Url>
   <Container name="mail"/>
   <!-- Uncomment this to enable Caja. -->
   <!-- <Param name="caja" value="enabled"/> -->
